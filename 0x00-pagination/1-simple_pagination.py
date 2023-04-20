@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+"""
+Implement a method named get_page
+"""
 import csv
 import math
 from typing import List, Tuple
@@ -42,10 +46,10 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-            """
-            Paginate dataset
-            """
-            assert isinstance(page, int) and page > 0
-            assert isinstance(page_size, int) and page_size > 0
-            start_idx, end_idx = index_range(page, page_size)
-            return self.dataset()[start_idx:end_idx]
+        """
+        Paginate dataset
+        """
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+        start_idx, end_idx = index_range(page, page_size)
+        return self.dataset()[start_idx:end_idx]
