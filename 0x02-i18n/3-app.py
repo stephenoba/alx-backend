@@ -26,7 +26,7 @@ def get_locale():
     """
     Get User's locale from AcceptLanguagesx header
     """
-    return "fr"
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
 @app.route('/')
