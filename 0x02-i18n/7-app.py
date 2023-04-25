@@ -2,6 +2,7 @@
 """
 Basic Flask app that creates a single / route.
 """
+import pytz
 from typing import Union
 from flask import g
 from flask import Flask, render_template
@@ -42,6 +43,31 @@ def get_locale():
         return locale
 
     return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+@babel.timezoneselector
+def get_timezone() -> str:
+    """
+    1 Find timezone parameter in URL parameters
+    2 Find time zone from user settings
+    3 Default to UTC
+    """
+    try:
+        if request.args.get("timezone"):
+            timezone = request.args.get("timezone")
+            tz = pytz.timezone(timezone)
+
+        elif g.user and g.user.get("timezone"):
+            timezone = g.user.get("timezone")
+            tz = pytz.timezone(timezone)
+        else:
+            timezone = app.config["BABEL_DEFAULT_TIMEZONE"]
+            tz = pytz.timezone(timezone)
+
+    except pytz.exceptions.UnknownTimeZoneError:
+        timezone = "UTC"
+
+    return timezone
 
 
 users = {
